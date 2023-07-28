@@ -33,6 +33,18 @@ public class EmployeeRestController {
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
+    @PutMapping("/emp/{id}")
+    Employee updateEmp(@RequestBody Employee updateEmp, @PathVariable Integer id) {
+        return repository.findById(id)
+                .map(employee -> {
+                    employee.setFirstName(updateEmp.getFirstName());
+                    employee.setLastName(updateEmp.getLastName());
+                    employee.setEmail(updateEmp.getEmail());
+                    return repository.save(employee);
+                    })
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
+    }
+
     @DeleteMapping("emp/{id}")
     void deleteEmployee(@PathVariable Integer id) {
         repository.deleteById(id);
